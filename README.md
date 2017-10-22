@@ -1,6 +1,6 @@
 # Domain Modelling in F#
 
-Create by (http://scottwlaschin.com/)[Scott Wlaschin]
+Create by [http://scottwlaschin.com/](Scott Wlaschin)
 
 This is the training material for a hands-on 3 hour "Domain Modelling in F#" session.
 
