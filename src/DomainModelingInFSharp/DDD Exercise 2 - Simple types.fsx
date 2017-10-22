@@ -39,7 +39,7 @@ module SimpleTypes =
 
     type String50 = private String50 of string
     
-    module String50 =
+    module String50module =
         let create (s:string) = 
             if String.IsNullOrEmpty(s) then 
                 None               
@@ -50,12 +50,24 @@ module SimpleTypes =
         let value (String50 s) = s
 
     //type EmailAddress = ??
+    type EmailAddress = private EmailAddress of string
+
+    module EmailAddressmodule =
+        let create (s:string) =
+            if String.IsNullOrEmpty(s) then
+                None
+            else if (s.Contains("@")) then
+                Some (EmailAddress)
+            else None
+        let value (EmailAddress s) = s
+                
     
     //module EmailAddress =
     //    let create (s:string) = ??
     //    let value (EmailAddress s) = ??
 
     //type WidgetCode = ??
+    type WidgetCode = private WidgetCode of string
     
     //module WidgetCode =
     //    let create (s:string) = ??

@@ -55,6 +55,7 @@ let deal : Deal =
     fun (ShuffledDeck cards) -> 
         match cards with
         | dealtCard::remaining -> (ShuffledDeck remaining,dealtCard)
+        | [] _
         // can you find the bug?
 
 // implementation

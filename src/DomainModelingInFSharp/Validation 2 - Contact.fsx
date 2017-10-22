@@ -20,7 +20,7 @@ module SimpleTypes =
     // String10
     type String10 = private String10 of string
     
-    module String10 =
+    module String10m =
         let create fieldName (s:string) = 
             if String.IsNullOrEmpty(s) then 
                 Validation.fail (fieldName + " must not be null or empty")
@@ -37,7 +37,7 @@ module SimpleTypes =
 
     type EmailAddress = private EmailAddress of string
     
-    module EmailAddress =
+    module EmailAddressm =
         let create (s:string) = 
             if String.IsNullOrEmpty(s) then 
                 Validation.fail "Email must not be null or empty"
@@ -55,7 +55,7 @@ module SimpleTypes =
     // NOTE: this type would normally be opaque
     type ContactId = private ContactId of int
 
-    module ContactId =
+    module ContactIdm =
         let create (i:int) = 
             if i < 1 then
                 Validation.fail "ContactId must be positive integer"
@@ -85,11 +85,11 @@ module ContactDomain =
 
     let createFirstName firstName = 
         let fieldName = "First name"
-        String10.create fieldName firstName
+        String10m.create fieldName firstName
     
     let createLastName lastName = 
         let fieldName = "Last name"
-        String10.create fieldName lastName 
+        String10m.create fieldName lastName 
 
     let createPersonalName firstName lastName = 
         {FirstName = firstName; LastName = lastName}
@@ -123,12 +123,12 @@ module ContactDTO =
     /// because the Contact type has stricter constraints than DTO.
     let contactToDto(cust:Contact) =
         // extract the raw int id from the ContactId wrapper
-        let custIdInt = cust.Id |> ContactId.value
+        let custIdInt = cust.Id |> ContactIdm.value
 
         // create the object and set the properties
         let contactDto = ContactDto()
         contactDto.Id <- custIdInt 
-        contactDto.FirstName <- cust.Name.FirstName |> String10.value
+        contactDto.FirstName <- cust.Name.FirstName |> String10m.value
         contactDto.LastName <- cust.Name.LastName |> String10.value
         contactDto.Email <- cust.Email |> EmailAddress.value
         contactDto
@@ -164,7 +164,10 @@ module ContactDTO =
 
             // the "createPersonalName" functions takes normal inputs, not inputs with errors,
             // but it can be "lifted" to the Validation type
-            let personalNameOrError = createPersonalName <!> firstNameOrError <*> lastNameOrError 
+            let personalNameOrError = 
+                createPersonalName 
+                <!> firstNameOrError 
+                <*> lastNameOrError 
 
             // similarly try to make an email
             let emailOrError = EmailAddress.create dto.Email

@@ -35,7 +35,7 @@ module SimpleTypes =
 
     type String1 = private String1 of string
     
-    module String1 =
+    module String1module =
         let create (s:string) = 
             if String.IsNullOrEmpty(s) then 
                 None               
@@ -47,7 +47,7 @@ module SimpleTypes =
 
     type String50 = private String50 of string
     
-    module String50 =
+    module String50m =
         let create (s:string) = 
             if String.IsNullOrEmpty(s) then 
                 None               
@@ -59,6 +59,7 @@ module SimpleTypes =
 
     type EmailAddress = private EmailAddress of string
     
+    [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
     module EmailAddress =
         let create (s:string) = 
             if String.IsNullOrEmpty(s) then 
